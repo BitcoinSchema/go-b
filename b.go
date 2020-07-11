@@ -34,8 +34,10 @@ func (b *B) FromTape(tape bob.Tape) error {
 
 	b.MediaType = tape.Cell[2].S
 	b.Encoding = tape.Cell[3].S
+
 	switch strings.ToLower(b.Encoding) {
 	case "gzip":
+		fallthrough
 	case "binary":
 		// Decode base64 data
 		data, err := base64.StdEncoding.DecodeString(tape.Cell[1].B)
@@ -43,7 +45,7 @@ func (b *B) FromTape(tape bob.Tape) error {
 			log.Println("Failed to decode b64 signature", err)
 			return err
 		}
-		b.Data = data // base 64 decode
+		b.Data = data
 	case "utf8":
 		fallthrough
 	case "utf-8":
@@ -60,4 +62,11 @@ func (b *B) FromTape(tape bob.Tape) error {
 // BitFsURL is a helper to create a bitfs url to fetch the content over http
 func BitFsURL(txid string, outIndex int, scriptChunk int) string {
 	return fmt.Sprintf("https://x.bitfs.network/%s.out.%d.%d", txid, outIndex, scriptChunk)
+}
+
+// DataURI returns a b64 encoded image that can be set directly. Ex: <img src="b64data" />
+func (b *B) DataURI() string {
+	// encode raw bytes to b64
+	s := base64.StdEncoding.EncodeToString(b.Data)
+	return fmt.Sprintf("data:%s;base64,%s", b.Encoding, s)
 }
