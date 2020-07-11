@@ -59,5 +59,5 @@ func (b *B) FromTape(tape bob.Tape) error {
 
 // BitFsURL is a helper to create a bitfs url to fetch the content over http
 func BitFsURL(txid string, outIndex int, scriptChunk int) string {
-	return fmt.Sprintf("%s.out.%d.%d", txid, outIndex, scriptChunk)
+	return fmt.Sprintf("https://x.bitfs.network/%s.out.%d.%d", txid, outIndex, scriptChunk)
 }
