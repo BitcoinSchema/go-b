@@ -23,10 +23,11 @@ func TestDataURI(t *testing.T) {
 
 	bobData.FromString(bobString)
 
+	t.Logf("Stuff %+v", bobData)
 	bData := New()
 	bData.FromTape(bobData.Out[0].Tape[1])
 
 	dataURI := bData.DataURI()
 
-	t.Error("DataURI", dataURI, bData.Data)
+	t.Error("DataURI", dataURI, bData.Data.UTF8)
 }

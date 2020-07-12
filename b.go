@@ -12,10 +12,15 @@ import (
 // Prefix is the Bitcom prefix used by B
 const Prefix = "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut"
 
+// Data is the content portion of the B data
+type Data struct {
+	Bytes []byte `json:"data,omitempty"`
+	UTF8  string `json:"UTF8,omitempty"`
+}
+
 // B is B protocol
 type B struct {
-	Data      []byte `json:"data,omitempty"`
-	UTF8      string `json:"UTF8,omitempty"`
+	Data      Data
 	MediaType string `json:"mediaType"`
 	Encoding  string `json:"encoding"`
 	Filename  string `json:"filename,omitempty"`
@@ -45,11 +50,11 @@ func (b *B) FromTape(tape bob.Tape) error {
 			log.Println("Failed to decode b64 signature", err)
 			return err
 		}
-		b.Data = data
+		b.Data.Bytes = data
 	case "utf8":
 		fallthrough
 	case "utf-8":
-		b.UTF8 = tape.Cell[1].S
+		b.Data.UTF8 = tape.Cell[1].S
 	}
 
 	if len(tape.Cell[4].S) != 0 {
