@@ -1,6 +1,15 @@
 package b
 
 import (
+	"encoding/base64"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/rohenaz/go-bob"
@@ -23,11 +32,72 @@ func TestDataURI(t *testing.T) {
 
 	bobData.FromString(bobString)
 
-	t.Logf("Stuff %+v", bobData)
+	// TODO - the above data does not contain the actual B information from the tx it has been stripped out
+	t.Logf("Stuff %+v", bobData.Out[0].Tape[1])
 	bData := New()
 	bData.FromTape(bobData.Out[0].Tape[1])
 
 	dataURI := bData.DataURI()
+	bitfsUrl := BitFsURL(bobData.Tx.H, 0, 3)
 
-	t.Error("DataURI", dataURI, bData.Data.UTF8)
+	// Build fileName from fullPath
+	fileUrl, err := url.Parse(bitfsUrl)
+	if err != nil {
+		log.Println("Error", err)
+		return
+	}
+
+	path := fileUrl.Path
+	segments := strings.Split(path, "/")
+
+	fileName := segments[len(segments)-1]
+
+	// Create blank file
+	file, err := os.Create(fileName)
+
+	if err != nil {
+		log.Println("Error", err)
+		return
+	}
+
+	client := http.Client{
+		CheckRedirect: func(r *http.Request, via []*http.Request) error {
+			r.URL.Opaque = r.URL.Path
+			return nil
+		},
+	}
+
+	// Put content on file
+
+	resp, err := client.Get(bitfsUrl)
+
+	if err != nil {
+		log.Println("Error", err)
+		return
+	}
+
+	defer resp.Body.Close()
+
+	// Read the body
+	var body []byte
+	if body, err = ioutil.ReadAll(resp.Body); err != nil {
+		log.Println("Failed to read", err)
+		return
+	}
+	// fmt.Printf("image data %x\n\n", body)
+
+	fmt.Println(base64.StdEncoding.EncodeToString(body))
+
+	size, err := io.Copy(file, resp.Body)
+
+	defer file.Close()
+
+	if err != nil {
+		log.Println("Error", err)
+		return
+	}
+
+	fmt.Printf("Just Downloaded a file %s with size %d\n\n", fileName, size)
+
+	t.Error("DataURI", dataURI, bData.Data.UTF8, bitfsUrl)
 }

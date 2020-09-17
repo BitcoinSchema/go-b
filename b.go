@@ -57,7 +57,7 @@ func (b *B) FromTape(tape bob.Tape) error {
 		b.Data.UTF8 = tape.Cell[1].S
 	}
 
-	if len(tape.Cell[4].S) != 0 {
+	if len(tape.Cell) > 4 && len(tape.Cell[4].S) != 0 {
 		b.Filename = tape.Cell[4].S
 	}
 
