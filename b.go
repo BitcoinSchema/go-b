@@ -72,6 +72,6 @@ func BitFsURL(txid string, outIndex int, scriptChunk int) string {
 // DataURI returns a b64 encoded image that can be set directly. Ex: <img src="b64data" />
 func (b *B) DataURI() string {
 	// encode raw bytes to b64
-	s := base64.StdEncoding.EncodeToString(b.Data)
+	s := base64.StdEncoding.EncodeToString(b.Data.Bytes)
 	return fmt.Sprintf("data:%s;base64,%s", b.Encoding, s)
 }
