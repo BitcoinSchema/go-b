@@ -1,5 +1,5 @@
-module github.com/rohenaz/go-b
+module github.com/bitcoinschema/go-b
 
 go 1.14
 
-require github.com/rohenaz/go-bob v0.0.0-20200711220921-847f9f004275
+require github.com/bitcoinschema/go-bob v0.0.5

@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/rohenaz/go-bob"
+	"github.com/bitcoinschema/go-bob"
 )
 
 // Prefix is the Bitcom prefix used by B
