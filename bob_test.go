@@ -19,7 +19,14 @@ func TestNewFromTape(t *testing.T) {
 		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
 	}
 
+	// Invalid tape
 	var b *B
+	b, err = NewFromTape(tx.Out[0].Tape[0])
+	if err == nil {
+		t.Fatalf("error should have occurred")
+	}
+
+	// Valid tape
 	b, err = NewFromTape(tx.Out[0].Tape[1])
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
@@ -45,6 +52,7 @@ func TestNewFromTapes(t *testing.T) {
 		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
 	}
 
+	// Valid
 	var b *B
 	b, err = NewFromTapes(tx.Out[0].Tape)
 	if err != nil {
@@ -52,6 +60,22 @@ func TestNewFromTapes(t *testing.T) {
 	}
 	if b.Encoding != expectedEncoding {
 		t.Fatalf("expected Encoding: %s got: %s", expectedEncoding, b.Encoding)
+	}
+
+	// Change type
+	tx.Out[0].Tape[1].Cell[3].S = string(EncodingGzip)
+	b, err = NewFromTapes(tx.Out[0].Tape)
+	if err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+	if b.Encoding != string(EncodingGzip) {
+		t.Fatalf("expected Encoding: %s got: %s", EncodingGzip, b.Encoding)
+	}
+
+	// Invalid
+	b, err = NewFromTapes(tx.Out[1].Tape)
+	if err == nil {
+		t.Fatalf("error should have occurred")
 	}
 
 	// todo: finish tests and examples (need BOB tx)

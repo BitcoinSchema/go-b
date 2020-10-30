@@ -2,6 +2,7 @@ package b
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -30,6 +31,7 @@ func NewFromTapes(tapes []bob.Tape) (b *B, err error) {
 			}
 		}
 	}
+	err = errors.New("no b tape found")
 	return
 }
 
