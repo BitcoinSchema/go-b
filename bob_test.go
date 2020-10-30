@@ -21,7 +21,7 @@ func TestNewFromTape(t *testing.T) {
 
 	// Invalid tape
 	var b *B
-	b, err = NewFromTape(tx.Out[0].Tape[0])
+	_, err = NewFromTape(tx.Out[0].Tape[0])
 	if err == nil {
 		t.Fatalf("error should have occurred")
 	}
@@ -73,7 +73,7 @@ func TestNewFromTapes(t *testing.T) {
 	}
 
 	// Invalid
-	b, err = NewFromTapes(tx.Out[1].Tape)
+	_, err = NewFromTapes(tx.Out[1].Tape)
 	if err == nil {
 		t.Fatalf("error should have occurred")
 	}
