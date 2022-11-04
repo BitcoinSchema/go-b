@@ -80,3 +80,40 @@ func TestNewFromTapes(t *testing.T) {
 
 	// todo: finish tests and examples (need BOB tx)
 }
+
+// TestNewFromTapes tests for nil case in NewFromTapes()
+func TestNewFromTape2(t *testing.T) {
+
+	expectedTx := "8216e4be2e93dc90c561ce03b25338756efb80cbf6fda46c9df932696a2f5814"
+
+	tx, err := bob.NewFromString(exampleBobTx2)
+	if err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+	if tx.Tx.H != expectedTx {
+		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
+	}
+
+	b := &B{}
+	err = b.FromTape(tx.Out[0].Tape[1])
+	if err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+	if b.Encoding != "UTF-8" {
+		t.Fatalf("expected Encoding: UTF-8 got: %s", b.Encoding)
+	}
+	if b.MediaType != "text/markdown" {
+		t.Fatalf("expected MediaType: text/markdown got: %s", b.Encoding)
+	}
+
+	err = b.FromTape(tx.Out[0].Tape[2])
+	if err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+	if b.Encoding != "binary" {
+		t.Fatalf("expected Encoding: binary got: %s", b.Encoding)
+	}
+	if b.MediaType != "image/png" {
+		t.Fatalf("expected MediaType: image/png got: %s", b.Encoding)
+	}
+}

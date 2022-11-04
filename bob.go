@@ -56,8 +56,13 @@ func (b *B) FromTape(tape bob.Tape) (err error) {
 	// Media type is after data
 	b.MediaType = tape.Cell[startIndex+2].S
 
-	// Encoding is after media
-	b.Encoding = tape.Cell[startIndex+3].S
+	// Optional Encoding is after media
+	if len(tape.Cell) > startIndex+3 && tape.Cell[startIndex+3].S != "" {
+		b.Encoding = tape.Cell[startIndex+3].S
+	} else {
+		// default encoding is binary
+		b.Encoding = string(EncodingBinary)
+	}
 
 	switch EncodingType(strings.ToLower(b.Encoding)) {
 	case EncodingGzip:
