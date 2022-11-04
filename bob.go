@@ -39,7 +39,7 @@ func NewFromTapes(tapes []bob.Tape) (b *B, err error) {
 
 // FromTape takes a BOB Tape and returns a B data structure
 func (b *B) FromTape(tape bob.Tape) (err error) {
-	if len(tape.Cell) < 4 {
+	if len(tape.Cell) < 3 { // B only requires 3 elements at minimum
 		err = fmt.Errorf("invalid B tx Only %d pushdatas", len(tape.Cell))
 		return
 	}
