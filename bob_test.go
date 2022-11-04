@@ -9,7 +9,7 @@ import (
 // TestNewFromTape tests for nil case in NewFromTape()
 func TestNewFromTape(t *testing.T) {
 	expectedTx := "10afc796d06fec11a4b6077012a1522355c82e5de316f4dd5c42ddccd6d61cdb"
-	expectedEncoding := "binary"
+	expectedEncoding := string(EncodingBinary)
 
 	tx, err := bob.NewFromString(exampleBobTx)
 	if err != nil {
@@ -42,7 +42,7 @@ func TestNewFromTape(t *testing.T) {
 func TestNewFromTapes(t *testing.T) {
 
 	expectedTx := "10afc796d06fec11a4b6077012a1522355c82e5de316f4dd5c42ddccd6d61cdb"
-	expectedEncoding := "binary"
+	expectedEncoding := string(EncodingBinary)
 
 	tx, err := bob.NewFromString(exampleBobTx)
 	if err != nil {
@@ -110,7 +110,7 @@ func TestNewFromTape2(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-	if b.Encoding != "binary" {
+	if b.Encoding != string(EncodingBinary) {
 		t.Fatalf("expected Encoding: binary got: %s", b.Encoding)
 	}
 	if b.MediaType != "image/png" {
