@@ -2,7 +2,7 @@
 > Library for working with [B transactions](https://github.com/unwriter/B) (Bitcoin OP_RETURN protocol) in Go
 
 [![Release](https://img.shields.io/github/release-pre/BitcoinSchema/go-b.svg?logo=github&style=flat&v=3)](https://github.com/BitcoinSchema/go-b/releases)
-[![Build Status](https://img.shields.io/github/workflow/status/BitcoinSchema/go-b/run-go-tests?logo=github&v=3)](https://github.com/BitcoinSchema/go-b/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/BitcoinSchema/go-b/run-tests.yml?branch=master&logo=github&v=3)](https://github.com/BitcoinSchema/go-b/actions)
 [![Report](https://goreportcard.com/badge/github.com/BitcoinSchema/go-b?style=flat&v=3)](https://goreportcard.com/report/github.com/BitcoinSchema/go-b)
 [![codecov](https://codecov.io/gh/BitcoinSchema/go-b/branch/master/graph/badge.svg?v=3)](https://codecov.io/gh/BitcoinSchema/go-b)
 [![Go](https://img.shields.io/github/go-mod/go-version/BitcoinSchema/go-b?v=3)](https://golang.org/)
