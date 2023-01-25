@@ -63,12 +63,13 @@ func TestNewFromTapes(t *testing.T) {
 	}
 
 	// Change type
-	tx.Out[0].Tape[1].Cell[3].S = string(EncodingGzip)
+	gzip := string(EncodingGzip)
+	tx.Out[0].Tape[1].Cell[3].S = &gzip
 	b, err = NewFromTapes(tx.Out[0].Tape)
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-	if b.Encoding != string(EncodingGzip) {
+	if b.Encoding != gzip {
 		t.Fatalf("expected Encoding: %s got: %s", EncodingGzip, b.Encoding)
 	}
 

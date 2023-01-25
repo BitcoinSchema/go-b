@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bitcoinschema/go-bob"
+	"github.com/bitcoinschema/go-bpu"
 )
 
 // NewFromTape will create a new AIP object from a bob.Tape
 // Using the FromTape() alone will prevent validation (data is needed via SetData to enable)
-func NewFromTape(tape bob.Tape) (b *B, err error) {
+func NewFromTape(tape bpu.Tape) (b *B, err error) {
 	b = new(B)
 	err = b.FromTape(tape)
 	return
@@ -19,11 +19,11 @@ func NewFromTape(tape bob.Tape) (b *B, err error) {
 
 // NewFromTapes will create a new B object from a []bob.Tape
 // Using the FromTapes() alone will prevent validation (data is needed via SetData to enable)
-func NewFromTapes(tapes []bob.Tape) (b *B, err error) {
+func NewFromTapes(tapes []bpu.Tape) (b *B, err error) {
 	// Loop tapes -> cells (only supporting 1 sig right now)
 	for _, t := range tapes {
 		for _, cell := range t.Cell {
-			if cell.S == Prefix {
+			if cell.S != nil && *cell.S == Prefix {
 				b = new(B)
 				err = b.FromTape(t)
 				// b.SetDataFromTapes(tapes)
@@ -38,7 +38,7 @@ func NewFromTapes(tapes []bob.Tape) (b *B, err error) {
 // todo: SetDataFromTapes()
 
 // FromTape takes a BOB Tape and returns a B data structure
-func (b *B) FromTape(tape bob.Tape) (err error) {
+func (b *B) FromTape(tape bpu.Tape) (err error) {
 	if len(tape.Cell) < 3 { // B only requires 3 elements at minimum
 		err = fmt.Errorf("invalid B tx Only %d pushdatas", len(tape.Cell))
 		return
@@ -47,18 +47,18 @@ func (b *B) FromTape(tape bob.Tape) (err error) {
 	// Loop to find start of B
 	var startIndex int
 	for i, cell := range tape.Cell {
-		if cell.S == Prefix {
+		if cell.S != nil && *cell.S == Prefix {
 			startIndex = i
 			break
 		}
 	}
 
 	// Media type is after data
-	b.MediaType = tape.Cell[startIndex+2].S
+	b.MediaType = *tape.Cell[startIndex+2].S
 
 	// Optional Encoding is after media
-	if len(tape.Cell) > startIndex+3 && tape.Cell[startIndex+3].S != "" {
-		b.Encoding = tape.Cell[startIndex+3].S
+	if len(tape.Cell) > startIndex+3 && *tape.Cell[startIndex+3].S != "" {
+		b.Encoding = *tape.Cell[startIndex+3].S
 	} else {
 		// default encoding is binary
 		b.Encoding = string(EncodingBinary)
@@ -69,18 +69,18 @@ func (b *B) FromTape(tape bob.Tape) (err error) {
 		fallthrough
 	case EncodingBinary:
 		// Decode base64 data
-		if b.Data.Bytes, err = base64.StdEncoding.DecodeString(tape.Cell[startIndex+1].B); err != nil {
+		if b.Data.Bytes, err = base64.StdEncoding.DecodeString(*tape.Cell[startIndex+1].B); err != nil {
 			return
 		}
 	case EncodingUtf8:
 		fallthrough
 	case EncodingUtf8Alt:
-		b.Data.UTF8 = tape.Cell[startIndex+1].S
+		b.Data.UTF8 = *tape.Cell[startIndex+1].S
 	}
 
 	// Filename is optional and last
-	if len(tape.Cell) > startIndex+4 && len(tape.Cell[startIndex+4].S) != 0 {
-		b.Filename = tape.Cell[startIndex+4].S
+	if len(tape.Cell) > startIndex+4 && tape.Cell[startIndex+4].S != nil {
+		b.Filename = *tape.Cell[startIndex+4].S
 	}
 
 	return
