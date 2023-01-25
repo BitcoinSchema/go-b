@@ -69,8 +69,11 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 		fallthrough
 	case EncodingBinary:
 		// Decode base64 data
-		if b.Data.Bytes, err = base64.StdEncoding.DecodeString(*tape.Cell[startIndex+1].B); err != nil {
-			return
+		if tape.Cell[startIndex+1].B != nil {
+			bStr := *tape.Cell[startIndex+1].B
+			if b.Data.Bytes, err = base64.StdEncoding.DecodeString(bStr); err != nil {
+				return
+			}
 		}
 	case EncodingUtf8:
 		fallthrough
