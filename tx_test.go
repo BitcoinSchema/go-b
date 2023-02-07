@@ -44,7 +44,7 @@ const exampleBobTx2 = `{
       "e": {
         "v": 0,
         "i": 0,
-        "a": false
+        "a": ""
       },
       "tape": [
         {
