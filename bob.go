@@ -78,7 +78,11 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 	case EncodingUtf8:
 		fallthrough
 	case EncodingUtf8Alt:
-		b.Data.UTF8 = *tape.Cell[startIndex+1].S
+		if tape.Cell[startIndex+1].S != nil {
+			b.Data.UTF8 = *tape.Cell[startIndex+1].S
+		} else {
+			b.Data.UTF8 = ""
+		}
 	}
 
 	// Filename is optional and last

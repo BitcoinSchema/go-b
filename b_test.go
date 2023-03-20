@@ -34,6 +34,15 @@ func BenchmarkBitFsURL(b *testing.B) {
 	}
 }
 
+// TestEmptyB tests and empty B tx
+func TestEmptyB(t *testing.T) {
+	bobData, _ := bob.NewFromRawTxString(sampleEmptyFile)
+	bData, _ := NewFromTape(bobData.Out[0].Tape[1])
+	if bData.Encoding == "utf-8" {
+		t.Fatalf("expected %s, got: %s", "utf-8", bData.Encoding)
+	}
+}
+
 // TestDataURI tests for nil case in DataURI()
 func TestDataURI(t *testing.T) {
 
