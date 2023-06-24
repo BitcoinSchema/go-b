@@ -50,6 +50,7 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 <br/>
 
 - [bitcoinschema/go-bob](https://github.com/bitcoinschema/go-bob)
+- [bitcoinschema/go-bpu](https://github.com/bitcoinschema/go-bpu)
 </details>
 
 <details>
@@ -111,7 +112,7 @@ vet                   Run the Go vet application
 
 ## Examples & Tests
 All unit tests and [examples](examples) run via [GitHub Actions](https://github.com/BitcoinSchema/go-b/actions) and
-uses [Go version 1.17.x](https://golang.org/doc/go1.17). View the [configuration file](.github/workflows/run-tests.yml).
+uses [Go version 1.19.x](https://golang.org/doc/go1.19). View the [configuration file](.github/workflows/run-tests.yml).
 
 Run all tests (including integration tests)
 ```shell script
