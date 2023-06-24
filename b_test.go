@@ -68,7 +68,7 @@ func TestDataURI(t *testing.T) {
 	}
 
 	// Create the bitfs URL
-	bitfsURL := BitFsURL(bobData.Tx.H, 0, 3)
+	bitfsURL := BitFsURL(bobData.Tx.Tx.H, 0, 3)
 	if bitfsURL != exampleFileURLGif {
 		t.Fatalf("expected bitfsURL: %s got: %s", "", bitfsURL)
 	}

@@ -15,8 +15,8 @@ func TestNewFromTape(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-	if tx.Tx.H != expectedTx {
-		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
+	if tx.Tx.Tx.H != expectedTx {
+		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.Tx.H)
 	}
 
 	// Invalid tape
@@ -48,8 +48,8 @@ func TestNewFromTapes(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-	if tx.Tx.H != expectedTx {
-		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
+	if tx.Tx.Tx.H != expectedTx {
+		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.Tx.H)
 	}
 
 	// Valid
@@ -91,8 +91,8 @@ func TestNewFromTape2(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-	if tx.Tx.H != expectedTx {
-		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.H)
+	if tx.Tx.Tx.H != expectedTx {
+		t.Fatalf("expected Tx.h: %s got: %s", expectedTx, tx.Tx.Tx.H)
 	}
 
 	b := &B{}
