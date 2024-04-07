@@ -57,7 +57,7 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 	b.MediaType = *tape.Cell[startIndex+2].S
 
 	// Optional Encoding is after media
-	if len(tape.Cell) > startIndex+3 && *tape.Cell[startIndex+3].S != "" {
+	if len(tape.Cell) > startIndex+3 && tape.Cell[startIndex+3].S != nil && *tape.Cell[startIndex+3].S != "" {
 		b.Encoding = *tape.Cell[startIndex+3].S
 	} else {
 		// default encoding is binary
