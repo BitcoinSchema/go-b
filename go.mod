@@ -1,6 +1,8 @@
 module github.com/bitcoinschema/go-b
 
-go 1.19
+go 1.22
+
+toolchain go1.22.5
 
 require (
 	github.com/bitcoinschema/go-bob v0.4.3
@@ -8,8 +10,11 @@ require (
 )
 
 require (
-	github.com/libsv/go-bk v0.1.6 // indirect
-	github.com/libsv/go-bt/v2 v2.2.5 // indirect
+	github.com/bitcoin-sv/go-sdk v1.1.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
 )
+
+replace github.com/bitcoinschema/go-bob => ../go-bob
+
+replace github.com/bitcoinschema/go-bpu => ../go-bpu
