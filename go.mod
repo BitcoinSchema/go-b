@@ -10,5 +10,5 @@ require (
 require (
 	github.com/bitcoin-sv/go-sdk v1.1.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 )
