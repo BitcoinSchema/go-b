@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/bitcoinschema/go-bpu"
 )
@@ -53,6 +52,12 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 		}
 	}
 
+	if tape.Cell[startIndex+1].B != nil {
+		if b.Data, err = base64.StdEncoding.DecodeString(*tape.Cell[startIndex+1].B); err != nil {
+			return
+		}
+	}
+
 	// Media type is after data
 	b.MediaType = *tape.Cell[startIndex+2].S
 
@@ -62,27 +67,6 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 	} else {
 		// default encoding is binary
 		b.Encoding = string(EncodingBinary)
-	}
-
-	switch EncodingType(strings.ToLower(b.Encoding)) {
-	case EncodingGzip:
-		fallthrough
-	case EncodingBinary:
-		// Decode base64 data
-		if tape.Cell[startIndex+1].B != nil {
-			bStr := *tape.Cell[startIndex+1].B
-			if b.Data.Bytes, err = base64.StdEncoding.DecodeString(bStr); err != nil {
-				return
-			}
-		}
-	case EncodingUtf8:
-		fallthrough
-	case EncodingUtf8Alt:
-		if tape.Cell[startIndex+1].S != nil {
-			b.Data.UTF8 = *tape.Cell[startIndex+1].S
-		} else {
-			b.Data.UTF8 = ""
-		}
 	}
 
 	// Filename is optional and last
