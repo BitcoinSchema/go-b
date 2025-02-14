@@ -52,9 +52,10 @@ func (b *B) FromTape(tape bpu.Tape) (err error) {
 		}
 	}
 
-	bStr := *tape.Cell[startIndex+1].B
-	if b.Data, err = base64.StdEncoding.DecodeString(bStr); err != nil {
-		return
+	if tape.Cell[startIndex+1].B != nil {
+		if b.Data, err = base64.StdEncoding.DecodeString(*tape.Cell[startIndex+1].B); err != nil {
+			return
+		}
 	}
 
 	// Media type is after data
