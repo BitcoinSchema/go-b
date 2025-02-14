@@ -16,12 +16,6 @@ import (
 // Prefix is the Bitcom prefix used by B
 const Prefix = "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut"
 
-// Data is the content portion of the B data
-// type Data struct {
-// 	Bytes []byte `json:"data,omitempty"`
-// 	UTF8  string `json:"utf8,omitempty"`
-// }
-
 // B is B protocol
 type B struct {
 	Data      []byte
@@ -30,6 +24,7 @@ type B struct {
 	Filename  string
 }
 
+// MarshalJSON custom json marshaler
 func (b *B) MarshalJSON() ([]byte, error) {
 	data := map[string]interface{}{
 		"content-type": b.MediaType,
@@ -39,12 +34,15 @@ func (b *B) MarshalJSON() ([]byte, error) {
 	switch EncodingType(strings.ToLower(b.Encoding)) {
 	case EncodingUtf8, EncodingUtf8Alt:
 		data["content"] = string(b.Data)
+	case EncodingBinary, EncodingGzip:
+		fallthrough
 	default:
 		data["content"] = base64.StdEncoding.EncodeToString(b.Data)
 	}
 	return json.Marshal(data)
 }
 
+// UnmarshalJSON custom json unmarshaler
 func (b *B) UnmarshalJSON(data []byte) error {
 	var raw map[string]interface{}
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -56,6 +54,8 @@ func (b *B) UnmarshalJSON(data []byte) error {
 	switch EncodingType(strings.ToLower(b.Encoding)) {
 	case EncodingUtf8, EncodingUtf8Alt:
 		b.Data = []byte(raw["content"].(string))
+	case EncodingBinary, EncodingGzip:
+		fallthrough
 	default:
 		var err error
 		b.Data, err = base64.StdEncoding.DecodeString(raw["content"].(string))
